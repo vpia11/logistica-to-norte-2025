@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logística Estratégica Patagonia Norte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        :root {
+            --primary-color: #0A2342;
+            --secondary-color: #38AECC;
+            --accent-color: #2D4059;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            line-height: 1.6;
+        }
+        .gradient-border {
+            position: relative;
+            border: none;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+        }
+        .clip-path-section {
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+        .map-container {
+            filter: grayscale(30%) contrast(110%);
+            transition: all 0.3s ease;
+        }
+        .map-container:hover {
+            filter: grayscale(0%) contrast(100%);
+        }
+    </style>
+</head>
+<body>
+    <header class="relative bg-gradient-to-r from-primary-color to-accent-color text-white py-16">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                Infraestructura Logística Patagonia Norte
+            </h1>
+            <p class="text-xl text-gray-200 max-w-2xl mx-auto opacity-80">
+                Análisis Estratégico de Capacidades Logísticas en Río Negro y Chubut
+            </p>
+        </div>
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 40 Q20 20 40 40 L40 0 L0 0 Z" fill="white" opacity="0.1"></path>
+                    </pattern>
+                </defs>
+                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern)"></rect>
+            </svg>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 -mt-12">
+        <section class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 gradient-border card-hover">
+                <h2 class="text-2xl font-bold text-primary-color mb-4">Objetivo Estratégico</h2>
+                <p class="text-gray-700">
+                    Análisis integral de la infraestructura crítica para optimizar el sostenimiento logístico de operaciones conjuntas en la región patagónica.
+                </p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 gradient-border card-hover">
+                <h2 class="text-2xl font-bold text-primary-color mb-4">Metodología Innovadora</h2>
+                <p class="text-gray-700">
+                    Enfoque multidimensional que integra análisis geoespacial, doctrina militar y evaluación de capacidades operativas.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden map-container">
+                <div class="p-6 bg-gray-50 border-b">
+                    <h2 class="text-3xl font-bold text-primary-color">Mapa Estratégico</h2>
+                    <p class="text-gray-600 mt-2">Infraestructura logística y nodos operacionales</p>
+                </div>
+                <div class="p-4">
+                    <iframe 
+                        src="https://www.google.com/maps/d/u/2/embed?mid=1T6jbX3SJ-LONq4bkMSyBbsyAP3LsR84&ehbc=2E312F" 
+                        width="100%" 
+                        height="480" 
+                        class="border-2 border-gray-200"
+                    ></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid md:grid-cols-3 gap-6 mb-12 clip-path-section">
+            <div class="bg-white rounded-xl shadow-lg p-6 gradient-border card-hover">
+                <div class="text-2xl font-bold text-secondary-color mb-4">
+                    <ion-icon name="analytics-outline"></ion-icon>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-color mb-3">Infraestructura Crítica</h3>
+                <p class="text-gray-700">
+                    Mapeo y evaluación de nodos estratégicos en Comodoro Rivadavia, Puerto Madryn y corredores logísticos.
+                </p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 gradient-border card-hover">
+                <div class="text-2xl font-bold text-secondary-color mb-4">
+                    <ion-icon name="rocket-outline"></ion-icon>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-color mb-3">Capacidades Operativas</h3>
+                <p class="text-gray-700">
+                    Análisis de movilidad, sostenimiento y adaptabilidad de los sistemas logísticos regionales.
+                </p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 gradient-border card-hover">
+                <div class="text-2xl font-bold text-secondary-color mb-4">
+                    <ion-icon name="shield-outline"></ion-icon>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-color mb-3">Doctrina Militar</h3>
+                <p class="text-gray-700">
+                    Evaluación de principios de flexibilidad, continuidad y seguridad en el despliegue logístico.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-12 gradient-border">
+            <h2 class="text-3xl font-bold text-primary-color mb-6">Conclusiones Principales</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary-color mb-3">Logística de Material</h3>
+                    <p class="text-gray-700">
+                        Identificación de corredores multimodales con potencial estratégico para optimizar el abastecimiento y movilidad.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary-color mb-3">Logística de Personal</h3>
+                    <p class="text-gray-700">
+                        Evaluación de capacidades de reemplazo, apoyo sanitario y sostenimiento en nodos urbanos clave.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-primary-color text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2 font-light">Trabajo Académico - Escuela Superior de Guerra Conjunta</p>
+            <p class="text-sm text-gray-300 opacity-80">Documento Estratégico de Posgrado en Defensa</p>
+        </div>
+    </footer>
+</body>
+</html>
