@@ -1,91 +1,129 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logística TO Patagonia Norte 2025</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background: #f4f7fa; color: #333; }
-    header { background-color: #003366; color: white; padding: 2rem 1rem; text-align: center; }
-    header h1 { margin: 0; font-size: 2rem; }
-    main { max-width: 1100px; margin: auto; padding: 2rem; }
-    section { margin-bottom: 2rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    h2 { color: #003366; border-left: 5px solid #0055a5; padding-left: 1rem; font-size: 1.5rem; }
-    h3 { color: #003366; margin-top: 1rem; }
-    p, li { line-height: 1.6; }
-    iframe { width: 100%; height: 480px; border: 1px solid #ccc; border-radius: 4px; margin-top: 1rem; }
-    ul { list-style-type: disc; padding-left: 2rem; }
-    footer { text-align: center; padding: 1rem; font-size: 0.9rem; color: #777; }
-  </style>
-</head>
-<body>
+# -*- coding: utf-8 -*-
+import os
+import pyodbc
+import traceback
 
-<header>
-  <h1>Infraestructura Logística del TO Patagonia Norte 2025</h1>
-</header>
+# -------------------------------
+# CONFIGURACIÓN
+# -------------------------------
+# Carpeta con las imágenes (80 archivos)
+CARPETA_IMAGENES = u"C:\\Users\\piava\\Pictures\\simbolos_convertidos"
 
-<main>
-  <section>
-    <h2>Introducción</h2>
-    <p>Este sitio presenta un resumen del trabajo final correspondiente a la asignatura <strong>Logística del Componente Ejército del Teatro de Operaciones</strong>, enfocado en el análisis de la infraestructura crítica de las provincias de <strong>Río Negro y Chubut</strong>.</p>
-    <p>El objetivo es identificar su valor estratégico en el sostenimiento logístico de operaciones conjuntas, mediante un estudio de capacidades en transporte terrestre, aéreo y naval; abastecimiento y mantenimiento; atención sanitaria y reemplazos; así como seguridad en la zona de retaguardia.</p>
-    <p>La información georreferenciada y el análisis doctrinario permiten visualizar el potencial y los desafíos logísticos del área, con base en la doctrina vigente y el concepto de Teatro de Operaciones Patagonia Norte 2025.</p>
-  </section>
+# Archivo .style en el que se insertarán los símbolos
+ARCHIVO_STYLE = u"C:\\Users\\piava\\Documents\\ArcGIS\\SIMBOLOGIA\\Plantilla_copy.style"
 
-  <section>
-    <h2>Mapa Interactivo</h2>
-    <p>Utilizá el siguiente mapa para explorar la ubicación de rutas, ferrocarriles, puertos, pasos fronterizos, aeródromos y presencia militar en la región.</p>
-    <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1T6jbX3SJ-LONq4bkMSyBbsyAP3LsR84&ehbc=2E312F"></iframe>
-  </section>
+# Archivo con el objeto base extraído de un símbolo válido
+RUTA_OBJECT_BASE = u"C:\\Users\\piava\\Documents\\estructura_symbol_valido.bin"
 
-  <section>
-    <h2>Análisis Logístico Regional</h2>
-    <ul>
-      <li><strong>Infraestructura crítica:</strong> Se destaca la red vial y portuaria con nodos clave como Comodoro Rivadavia y Puerto Madryn.</li>
-      <li><strong>Apoyo a las operaciones:</strong> La capacidad de transporte y sanidad requiere adecuación para operaciones sostenidas.</li>
-      <li><strong>Alineación doctrinaria:</strong> El sistema logístico debe estructurarse conforme a principios de continuidad, flexibilidad y seguridad.</li>
-    </ul>
-  </section>
+# Offset donde se inyecta la imagen en object_base (ajusta si es necesario)
+OFFSET = 200
 
-  <section>
-    <h2>Conclusiones Finales</h2>
-    <h3>Logística de Material</h3>
-    <p>Desde el análisis del campo material, la existencia de nodos logísticos multimodales en Cipolletti, General Roca, Puerto Madryn y Comodoro Rivadavia, junto a la conectividad terrestre, marítima y aérea, constituyen fortalezas clave para el abastecimiento, movilidad y distribución de medios. Esta red permite sostener inicialmente el esfuerzo de combate, brindando opciones de entrada y salida del TO, condición esencial para conservar la libertad de acción. Sin embargo, su adecuación al empleo operacional exige mejoras significativas: seguridad física de las instalaciones, capacidad de almacenamiento seguro y mantenimiento estructural de la red vial secundaria.</p>
+# -------------------------------
+# FUNCIONES AUXILIARES
+# -------------------------------
+def convertir_a_unicode(texto):
+    """Convierte texto a Unicode en Python 2.7."""
+    if isinstance(texto, unicode):
+        return texto
+    try:
+        return unicode(texto, "utf-8")
+    except UnicodeDecodeError:
+        try:
+            return unicode(texto, "latin-1")
+        except UnicodeDecodeError:
+            return unicode(texto, "ascii", "ignore")
 
-    <h3>Logística de Personal</h3>
-    <p>En relación con la logística de personal, se constata una aceptable disponibilidad de instalaciones civiles que podrían ser empleadas como centros de reemplazo, apoyo sanitario y servicios de moral en Viedma, Bariloche, Puerto Madryn y Comodoro Rivadavia. La doctrina de personal indica que estas funciones son esenciales para el mantenimiento de efectivos, el tratamiento de bajas y la moral combativa. No obstante, se reconoce una debilidad crítica en la integración civil-militar, especialmente en la planificación conjunta, lo que limita la eficacia del sostenimiento en profundidad.</p>
+def conectar_db(archivo_style):
+    """Conecta a la base de datos y retorna (conn, cursor)."""
+    conn_str = u"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + archivo_style
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+    return conn, cursor
 
-    <h3>Conclusiones Finales</h3>
-    <p>Los aspectos antes mencionados permiten concluir que la infraestructura logística de ambas provincias <strong>posibilita el sostenimiento operacional</strong>, pero su eficacia dependerá de la <strong>concepción anticipada, integral y adaptada del sistema logístico del TO</strong>. Será clave asegurar la continuidad del sostenimiento mediante:</p>
-    <ul>
-      <li>La inversión específica en capacidades críticas (depósitos, rutas secundarias, seguridad de instalaciones).</li>
-      <li>La integración sistemática de recursos civiles y militares bajo conducción operacional.</li>
-      <li>La optimización de los medios de transporte multimodal para sostener el esfuerzo logístico a lo largo del TO.</li>
-    </ul>
-    <p>En consecuencia, <strong>resulta necesario contemplar la modernización del sistema ferroviario, la protección activa de los puertos clave (San Antonio Este, Puerto Madryn)</strong> y <strong>la expansión de las capacidades de apoyo sanitario</strong> como líneas de acción prioritarias para asegurar la libertad de acción y la continuidad del sostenimiento en el TO Patagonia Norte.</p>
-  </section>
+# -------------------------------
+# LÓGICA PRINCIPAL
+# -------------------------------
+def main():
+    print u"🔵 INICIO DEL SCRIPT: Inyectar imágenes en la plantilla"
+    
+    # Leer el object_base previamente extraído
+    try:
+        with open(RUTA_OBJECT_BASE, "rb") as f:
+            object_base = f.read()
+        print u"✅ object_base leído, tamaño: %d bytes" % len(object_base)
+    except Exception as e:
+        print u"❌ Error al leer object_base:", e
+        return
 
-  <section>
-    <h2>Bibliografía</h2>
-    <ul>
-      <li>Ejército Argentino. (2015). <em>Conducción para las Fuerzas Terrestres (ROB-00-01)</em>. Departamento Doctrina.</li>
-      <li>Ejército Argentino. (s.f.). <em>Logística de Material y Personal</em>.</li>
-      <li>Ejército Argentino. (s.f.). <em>Compilado 5: Asuntos Civiles</em>.</li>
-      <li>Ejército Argentino. (s.f.). <em>Bases para el pensamiento estratégico. Tomo III</em>.</li>
-      <li>Trabajo final <em>Logística Componente Ejército del Teatro de Operaciones</em>.</li>
-    </ul>
-  </section>
+    # Conectar a la base de datos
+    try:
+        conn, cursor = conectar_db(ARCHIVO_STYLE)
+        print u"✅ Conexión a la base de datos exitosa"
+    except Exception as e:
+        print u"❌ Error de conexión:", e
+        return
 
-  <section>
-    <h2>Contacto y Créditos</h2>
-    <p>Desarrollado con fines académicos y profesionales. Contacto institucional: <strong>Escuela Superior de Guerra Conjunta</strong></p>
-  </section>
-</main>
+    # Verificar que la carpeta de imágenes exista
+    if not os.path.exists(CARPETA_IMAGENES):
+        print u"❌ Error: La carpeta de imágenes no existe:", CARPETA_IMAGENES
+        conn.close()
+        return
 
-<footer>
-  &copy; 2025 Infraestructura Logística TO Patagonia Norte. Todos los derechos reservados.
-</footer>
+    # Obtener la lista de imágenes en la carpeta (formatos válidos)
+    imagenes = [f for f in os.listdir(CARPETA_IMAGENES) if f.lower().endswith((".bmp",".png",".jpg",".jpeg",".gif",".tif",".tiff"))]
+    if not imagenes:
+        print u"⚠️ No se encontraron imágenes en la carpeta:", CARPETA_IMAGENES
+    else:
+        print u"✅ Se encontraron %d imágenes." % len(imagenes)
+        for imagen in imagenes:
+            nombre_simbolo = os.path.splitext(imagen)[0].strip()
+            nombre_simbolo_unicode = convertir_a_unicode(nombre_simbolo)
+            ruta_imagen = os.path.join(CARPETA_IMAGENES, imagen)
+            print u"🔹 Procesando símbolo: %s" % nombre_simbolo_unicode
 
-</body>
-</html>
+            try:
+                # Leer la imagen en binario
+                with open(ruta_imagen, "rb") as f_img:
+                    imagen_binaria = f_img.read()
+
+                # Calcular el máximo permitido para la imagen (para no sobrepasar el tamaño de object_base)
+                max_imagen = len(object_base) - OFFSET
+                if len(imagen_binaria) > max_imagen:
+                    print u"⚠️ La imagen '%s' es demasiado grande, se recortará." % nombre_simbolo_unicode
+                    imagen_binaria = imagen_binaria[:max_imagen]
+
+                # Crear object_final inyectando la imagen en object_base sin alterar su estructura
+                object_final = object_base[:OFFSET] + imagen_binaria + object_base[OFFSET + len(imagen_binaria):]
+
+                # Verificar si el símbolo ya existe
+                cursor.execute(u"SELECT COUNT(*) FROM [Marker Symbols] WHERE Name=?", (nombre_simbolo_unicode,))
+                existe = cursor.fetchone()[0]
+
+                if existe == 0:
+                    # Insertar nuevo símbolo
+                    sql_insert = u"INSERT INTO [Marker Symbols] (Name, Category, Type, Object, Tags) VALUES (?, ?, ?, ?, ?)"
+                    cursor.execute(sql_insert, (nombre_simbolo_unicode, u"Símbolos de Marcador", u"Picture Marker Symbol", pyodbc.Binary(object_final), u"Automático"))
+                    print u"✅ Símbolo insertado:", nombre_simbolo_unicode
+                else:
+                    # Sobrescribir el símbolo existente
+                    sql_update = u"UPDATE [Marker Symbols] SET Category=?, Type=?, Object=?, Tags=? WHERE Name=?"
+                    cursor.execute(sql_update, (u"Símbolos de Marcador", u"Picture Marker Symbol", pyodbc.Binary(object_final), u"Automático", nombre_simbolo_unicode))
+                    print u"♻️ Símbolo sobrescrito:", nombre_simbolo_unicode
+
+            except Exception as e:
+                print u"❌ Error al procesar '%s': %s" % (nombre_simbolo_unicode, e)
+                traceback.print_exc()
+
+    # Guardar cambios y cerrar la conexión
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print u"🎯 Archivo .style actualizado en:", ARCHIVO_STYLE
+    print u"✅ SCRIPT FINALIZADO"
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as ex:
+        print u"❌ ERROR FATAL:", ex
+        traceback.print_exc()
